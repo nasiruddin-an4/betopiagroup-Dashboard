@@ -135,7 +135,7 @@ export default function AdminLogin() {
         {/* Security Notice */}
         <div className="mt-6 text-center">
           <p className="text-gray-500 text-xs">
-            🔒 Secured with NextAuth & JWT
+            🔒 Secured with JWT Authentication
           </p>
         </div>
       </div>
