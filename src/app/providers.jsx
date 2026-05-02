@@ -118,5 +118,5 @@ export default function Providers({ children }) {
     };
   }, []);
 
-  return <>{children}</>;
+  return children;
 }

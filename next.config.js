@@ -3,7 +3,7 @@ const backendOrigin = apiBase.replace(/\/api$/, "");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactCompiler: true,
+  trailingSlash: true,
   async redirects() {
     return [
       {

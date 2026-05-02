@@ -13,15 +13,13 @@ export const metadata = {
   description: "Administrative panel for Betopia Group",
   icons: {
     icon: "/bLogo.png",
-    shortcut: "/bLogo.png",
-    apple: "/bLogo.png",
   },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={outfit.variable} suppressHydrationWarning>
-      <body className="font-outfit" suppressHydrationWarning>
+    <html lang="en" className={outfit.variable}>
+      <body className="font-outfit">
         <Providers>{children}</Providers>
       </body>
     </html>
