@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  betopia-group-dashboard:
+    container_name: betopia-group-dashboard
+    image: ${DOCKER_IMAGE}
+    restart: unless-stopped
+    ports:
+      - "6005:6005"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production

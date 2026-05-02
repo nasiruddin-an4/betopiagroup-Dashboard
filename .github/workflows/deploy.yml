@@ -1,0 +1,66 @@
+name: Deploy Betopia Group Dashboard
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASS }}
+
+      - name: Build Docker Image
+        run: |
+          docker build \
+            --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
+            -t betopialimited/betopia-group-dashboard:${{ github.sha }} \
+            -t betopialimited/betopia-group-dashboard:latest \
+            .
+
+      - name: Push Docker Images
+        run: |
+          docker push betopialimited/betopia-group-dashboard:${{ github.sha }}
+          docker push betopialimited/betopia-group-dashboard:latest
+
+      - name: Deploy to Production Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            set -e  # Stop script on any error
+
+            # Log in to Docker Hub on the VM (needed for private repos)
+            echo "${{ secrets.DOCKER_PASS }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
+
+            # Pull the specific commit image
+            docker pull betopialimited/betopia-group-dashboard:${{ github.sha }}
+
+            # Tag it as latest for convenience
+            docker tag betopialimited/betopia-group-dashboard:${{ github.sha }} betopialimited/betopia-group-dashboard:latest
+
+            # Stop and remove the old container if it exists
+            docker stop betopia-group-dashboard || true
+            docker rm betopia-group-dashboard || true
+
+            # Run the new container
+            docker run -d \
+              --name betopia-group-dashboard \
+              -p 6005:6005 \
+              --env-file /opt/betopia/dashboard.env \
+              --restart always \
+              betopialimited/betopia-group-dashboard:${{ github.sha }}
+
+            # Clean up old images (optional, saves disk space)
+            docker image prune -f

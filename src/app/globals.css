@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-outfit), sans-serif;
+  font-weight: 400; /* Regular weight by default */
+  font-size: 14px; /* Standard regular font size for dashboard */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700; /* Titles are bold */
+}
