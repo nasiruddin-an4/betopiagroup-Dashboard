@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Providers from "./providers";
 import "./globals.css";
 import { Outfit } from "next/font/google";
@@ -11,16 +12,15 @@ const outfit = Outfit({
 export const metadata = {
   title: "Betopia Admin Panel",
   description: "Administrative panel for Betopia Group",
-  icons: {
-    icon: "/bLogo.png",
-  },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={outfit.variable}>
-      <body className="font-outfit">
-        <Providers>{children}</Providers>
+    <html lang="en">
+      <body className={`${outfit.variable} font-outfit`}>
+        <Suspense fallback={null}>
+          <Providers>{children}</Providers>
+        </Suspense>
       </body>
     </html>
   );
