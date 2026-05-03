@@ -160,7 +160,7 @@ export default function AdminSidebar({ children }) {
               </div>
               <div className="text-left hidden sm:block">
                 <p className="text-gray-900 text-sm leading-none mb-1 font-normal">
-                  {user?.name || "System Admin"}
+                  {user?.name || "Betopia Group Admin"}
                 </p>
                 <p className="text-gray-500 text-xs leading-none flex items-center font-normal">
                   Admin <ChevronDown size={12} className="ml-1 opacity-70" />
@@ -181,7 +181,7 @@ export default function AdminSidebar({ children }) {
                 <div className="absolute top-full right-0 mt-3 w-56 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden z-50 transform origin-top-right transition-all">
                   <div className="p-4 border-b border-gray-100">
                     <p className="text-gray-900 text-sm font-normal truncate">
-                      {user?.name || "System Admin"}
+                      {user?.name || "Betopia Group Admin"}
                     </p>
                     <p className="text-gray-500 text-xs truncate mt-1">
                       {user?.email || "admin@example.com"}
