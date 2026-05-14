@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Upload, Image as ImageIcon, Video, X, Loader2 } from "lucide-react";
+import { Upload, Image as ImageIcon, Video, X, Loader2, Link as LinkIcon } from "lucide-react";
 import { getImageUrl } from "../utils/s3";
+import Swal from "sweetalert2";
 
 export default function FileUpload({
   value,
@@ -14,6 +15,8 @@ export default function FileUpload({
 }) {
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState(getImageUrl(value) || "");
+  const [inputMethod, setInputMethod] = useState("upload"); // 'upload' or 'url'
+  const [urlInput, setUrlInput] = useState("");
 
   // Sync internal preview state when the value prop changes
   useEffect(() => {
@@ -50,12 +53,12 @@ export default function FileUpload({
         // Clean up the object URL
         URL.revokeObjectURL(localUrl);
       } else {
-        alert(data.error || "Upload failed");
+        Swal.fire({ title: "Error!", text: data.error || "Upload failed", icon: "error" });
         setPreview(value || ""); // Revert to previous value
       }
     } catch (error) {
       console.error("Upload error:", error);
-      alert("Failed to upload file");
+      Swal.fire({ title: "Error!", text: "Failed to upload file", icon: "error" });
       setPreview(value || ""); // Revert to previous value
     } finally {
       setUploading(false);
@@ -65,6 +68,13 @@ export default function FileUpload({
   const handleRemove = () => {
     setPreview("");
     onChange("");
+  };
+
+  const handleUrlSubmit = () => {
+    if (!urlInput.trim()) return;
+    setPreview(urlInput.trim());
+    onChange(urlInput.trim());
+    setUrlInput("");
   };
 
   const isImage =
@@ -126,29 +136,73 @@ export default function FileUpload({
       )}
 
       {/* Upload Button */}
-      <div className="flex gap-3">
-        <label className="flex-1 cursor-pointer">
-          <div className="flex items-center justify-center gap-2 px-4 py-3 bg-white hover:bg-gray-50 text-gray-700 rounded-xl border border-gray-300 shadow-sm transition-colors">
-            {uploading ? (
-              <>
-                <Loader2 size={20} className="animate-spin text-[#f79549]" />
-                <span>Uploading...</span>
-              </>
-            ) : (
-              <>
-                <Upload size={20} className="text-[#f79549]" />
-                <span className="font-normal">Upload File</span>
-              </>
-            )}
+      <div className="flex flex-col gap-3">
+        {type === "video" && (
+          <div className="flex gap-4 border-b border-gray-100 pb-2">
+            <button
+              type="button"
+              onClick={() => setInputMethod("upload")}
+              className={`text-sm font-semibold transition-colors flex items-center gap-1 ${
+                inputMethod === "upload" ? "text-[#f79549]" : "text-gray-400 hover:text-gray-700"
+              }`}
+            >
+              <Upload size={14} /> Upload File
+            </button>
+            <button
+              type="button"
+              onClick={() => setInputMethod("url")}
+              className={`text-sm font-semibold transition-colors flex items-center gap-1 ${
+                inputMethod === "url" ? "text-[#f79549]" : "text-gray-400 hover:text-gray-700"
+              }`}
+            >
+              <LinkIcon size={14} /> Enter Video URL
+            </button>
           </div>
-          <input
-            type="file"
-            onChange={handleFileChange}
-            accept={getAcceptString()}
-            disabled={uploading}
-            className="hidden"
-          />
-        </label>
+        )}
+
+        {inputMethod === "upload" || type !== "video" ? (
+          <div className="flex gap-3">
+            <label className="flex-1 cursor-pointer">
+              <div className="flex items-center justify-center gap-2 px-4 py-3 bg-white hover:bg-gray-50 text-gray-700 rounded-xl border border-gray-300 shadow-sm transition-colors">
+                {uploading ? (
+                  <>
+                    <Loader2 size={20} className="animate-spin text-[#f79549]" />
+                    <span>Uploading...</span>
+                  </>
+                ) : (
+                  <>
+                    <Upload size={20} className="text-[#f79549]" />
+                    <span className="font-normal">Upload File</span>
+                  </>
+                )}
+              </div>
+              <input
+                type="file"
+                onChange={handleFileChange}
+                accept={getAcceptString()}
+                disabled={uploading}
+                className="hidden"
+              />
+            </label>
+          </div>
+        ) : (
+          <div className="flex gap-2 items-center">
+            <input
+              type="text"
+              value={urlInput}
+              onChange={(e) => setUrlInput(e.target.value)}
+              placeholder="https://example.com/video.mp4"
+              className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-xl text-sm focus:outline-none focus:border-[#f79549] transition-colors"
+            />
+            <button
+              type="button"
+              onClick={handleUrlSubmit}
+              className="px-6 py-3 bg-[#f79549] text-white rounded-xl text-sm font-semibold hover:bg-orange-500 transition-colors"
+            >
+              Apply
+            </button>
+          </div>
+        )}
       </div>
 
       <p className="text-xs text-gray-500">

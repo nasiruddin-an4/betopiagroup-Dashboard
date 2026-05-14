@@ -6,6 +6,7 @@ import {
   deletePageData,
 } from "../../utils/pageDataApi";
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import AdminSidebar from "../../components/AdminSidebar";
 import FileUpload from "../../components/FileUpload";
 import CardManager from "../../components/CardManager";
@@ -29,7 +30,6 @@ export default function HomeContentPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [resetting, setResetting] = useState(false);
-  const [message, setMessage] = useState({ type: "", text: "" });
 
   // Hero Section
   const [heroMedia, setHeroMedia] = useState("");
@@ -154,34 +154,59 @@ export default function HomeContentPage() {
 
   const saveSection = async (section, data) => {
     setSaving(true);
-    setMessage({ type: "", text: "" });
     try {
       await savePageData("home", data);
-      setMessage({ type: "success", text: `${section} saved successfully!` });
-      setTimeout(() => setMessage({ type: "", text: "" }), 3000);
+      Swal.fire({
+        title: "Success!",
+        text: `${section} saved successfully!`,
+        icon: "success",
+        timer: 3000,
+        showConfirmButton: false,
+      });
     } catch (error) {
       console.error("Save failed:", error);
-      setMessage({ type: "error", text: error.message || "Failed to save." });
+      Swal.fire({
+        title: "Error!",
+        text: error.message || "Failed to save.",
+        icon: "error",
+      });
     } finally {
       setSaving(false);
     }
   };
 
   const resetPage = async () => {
-    if (
-      !confirm("Reset all saved content for Home page? This cannot be undone.")
-    )
-      return;
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Reset all saved content for Home page? This cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, reset it!",
+    });
+
+    if (!result.isConfirmed) return;
+
     setResetting(true);
     try {
       await deletePageData("home");
-      setMessage({ type: "success", text: "Home page reset to defaults!" });
+      Swal.fire({
+        title: "Reset!",
+        text: "Home page reset to defaults!",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      });
       setTimeout(() => {
-        setMessage({ type: "", text: "" });
         window.location.reload();
       }, 2000);
     } catch (err) {
-      setMessage({ type: "error", text: err.message || "Reset failed" });
+      Swal.fire({
+        title: "Error!",
+        text: err.message || "Reset failed",
+        icon: "error",
+      });
       setResetting(false);
     }
   };
@@ -221,24 +246,6 @@ export default function HomeContentPage() {
               <span>{resetting ? "Resetting..." : "Reset Defaults"}</span>
             </button>
           </div>
-
-          {/* Toast Message */}
-          {message.text && (
-            <div
-              className={`fixed top-24 right-8 px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50 animate-in fade-in slide-in-from-top-4 duration-300 ${
-                message.type === "success"
-                  ? "bg-emerald-500 text-white"
-                  : "bg-red-500 text-white"
-              }`}
-            >
-              {message.type === "success" ? (
-                <CheckCircle size={20} />
-              ) : (
-                <AlertCircle size={20} />
-              )}
-              <span className="font-normal">{message.text}</span>
-            </div>
-          )}
         </div>
 
         {/* Serial Content Layout */}
