@@ -108,13 +108,13 @@ export default function FileUpload({
             <img
               src={preview}
               alt="Preview"
-              className="w-full h-48 object-cover"
+              className="w-full h-48 object-contain"
             />
           )}
           {isVideo && (
             <video
               src={preview}
-              className="w-full h-48 object-cover"
+              className="w-full h-48 object-contain"
               controls
             />
           )}

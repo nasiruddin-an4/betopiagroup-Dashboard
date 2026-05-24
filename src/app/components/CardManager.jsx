@@ -159,32 +159,6 @@ export default function CardManager({
             key={card.id || index}
             className="bg-gray-50 border border-gray-200 rounded-xl p-4 shadow-sm"
           >
-            {editingIndex === index ? (
-              <div className="space-y-4">
-                {Object.keys(cardTemplate).map((key) => {
-                  if (key === "id") return null;
-                  return (
-                    <div key={key}>{renderField(key, editingCard[key])}</div>
-                  );
-                })}
-                <div className="flex gap-3 pt-4">
-                  <button
-                    onClick={handleSave}
-                    className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-normal transition-colors shadow-sm"
-                  >
-                    <Save size={16} />
-                    <span>Save</span>
-                  </button>
-                  <button
-                    onClick={handleCancel}
-                    className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-xl font-normal transition-colors shadow-sm"
-                  >
-                    <X size={16} />
-                    <span>Cancel</span>
-                  </button>
-                </div>
-              </div>
-            ) : (
               <div className="flex items-start gap-4">
                 <div className="flex flex-col gap-2">
                   <button
@@ -284,44 +258,61 @@ export default function CardManager({
                   </button>
                 </div>
               </div>
-            )}
           </div>
         ))}
-
-        {/* Add Card in Edit Mode */}
-        {editingIndex >= cards.length && editingCard && (
-          <div className="bg-gray-50 border border-gray-200 shadow-sm rounded-lg p-4">
-            <div className="space-y-4">
-              {Object.keys(cardTemplate).map((key) => {
-                if (key === "id") return null;
-                return (
-                  <div key={key}>{renderField(key, editingCard[key])}</div>
-                );
-              })}
-              <div className="flex gap-3 pt-4">
-                <button
-                  onClick={handleSave}
-                  className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors shadow-sm"
-                >
-                  <Save size={16} />
-                  <span>Save</span>
-                </button>
-                <button
-                  onClick={handleCancel}
-                  className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg transition-colors shadow-sm"
-                >
-                  <X size={16} />
-                  <span>Cancel</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
       {cards.length === 0 && editingIndex === null && (
         <div className="text-center py-12 text-gray-500 bg-gray-50 border border-gray-200 border-dashed rounded-lg shadow-sm">
           <p>No cards yet. Click "Add Card" to create one.</p>
+        </div>
+      )}
+
+      {/* Modal for Add / Edit */}
+      {editingIndex !== null && editingCard && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4">
+          <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-white shrink-0">
+              <h3 className="text-xl font-bold text-gray-900">
+                {editingIndex >= cards.length ? "Add New Card" : "Edit Card"}
+              </h3>
+              <button
+                onClick={handleCancel}
+                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="p-6 overflow-y-auto flex-1 bg-gray-50/30 custom-scrollbar">
+              <div className="space-y-6">
+                {Object.keys(cardTemplate).map((key) => {
+                  if (key === "id") return null;
+                  return <div key={key}>{renderField(key, editingCard[key])}</div>;
+                })}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-end gap-3 p-5 border-t border-gray-100 bg-white shrink-0">
+              <button
+                onClick={handleCancel}
+                className="px-6 py-2.5 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-xl transition-colors cursor-pointer text-sm font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSave}
+                className="flex items-center gap-2 px-8 py-2.5 bg-[#f79549] hover:bg-orange-600 text-white rounded-xl transition-all shadow-md shadow-orange-500/20 cursor-pointer text-sm font-medium"
+              >
+                <Save size={18} />
+                <span>Save Card</span>
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

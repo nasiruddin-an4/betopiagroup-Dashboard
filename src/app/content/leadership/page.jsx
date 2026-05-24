@@ -73,6 +73,15 @@ export default function LeadershipContentPage() {
   const [chairImage, setChairImage] = useState("/chairman.webp");
   const [chairLink, setChairLink] = useState("https://sabinaakter.com/");
 
+  // 6. Executive Management
+  const [executives, setExecutives] = useState([]);
+  
+  // 7. Departmental Leadership
+  const [departmental, setDepartmental] = useState([]);
+
+  // 8. Vice Presidents
+  const [vps, setVps] = useState([]);
+
   const applyDefaults = () => {
     setHeroImage("/LeaderImg.png");
     setHeroLabel("Our Leadership");
@@ -99,6 +108,20 @@ export default function LeadershipContentPage() {
     setChairBio("Sabina Akter represents the new era of leadership...");
     setChairImage("/chairman.webp");
     setChairLink("https://sabinaakter.com/");
+    setExecutives([
+      { id: 1, name: "Md. Nasir", title: "Chief Operating Officer (COO)", image: "/C_suite/nasir-COO.png" },
+      { id: 2, name: "Abdullah Al Alamin", title: "Chief Marketing Officer (CMO)", image: "/C_suite/abdullah-CMO.png" }
+    ]);
+    setDepartmental([
+      { id: 1, name: "Md. Saiful Islam", title: "Director, Finance", image: "/C_suite/saiful-Director FA.png" },
+      { id: 2, name: "Md. Rezaul Karim", title: "Head of Administration & Legal Affairs", image: "/C_suite/reja-Head-Admin.png" },
+      { id: 3, name: "Md. Sajedul Islam", title: "Head of Human Resources", image: "/C_suite/sajedul-HR Head.png" }
+    ]);
+    setVps([
+      { id: 1, name: "Md. Abdul Motin", title: "Vice President, Operation", image: "/C_suite/Md.-Abdul-Motin,-VICE-PRESIDENT.png" },
+      { id: 2, name: "Md. Amirul Haque", title: "Vice President, Sales", image: "/C_suite/Md.-Amirul-Haque,-VICE-PRESIDENT-SALES.png" },
+      { id: 3, name: "Md. Shamim Miah", title: "Vice President, Business Development", image: "/C_suite/Md.-Shamim-Miah,-VICE-PRESIDENT-BUSINESS-DEVELOPMENT.png" }
+    ]);
   };
 
   const updatePillar = (index, field, value) => {
@@ -151,6 +174,9 @@ export default function LeadershipContentPage() {
           else if (key === "chair_bio") setChairBio(parsedValue);
           else if (key === "chair_image") setChairImage(parsedValue);
           else if (key === "chair_link") setChairLink(parsedValue);
+          else if (key === "executives") setExecutives(parsedValue);
+          else if (key === "departmental") setDepartmental(parsedValue);
+          else if (key === "vps") setVps(parsedValue);
         });
       }
     } catch (error) {
@@ -244,6 +270,9 @@ export default function LeadershipContentPage() {
                   chair_bio: chairBio,
                   chair_image: chairImage,
                   chair_link: chairLink,
+                  executives,
+                  departmental,
+                  vps,
                 })
               }
               disabled={saving}
@@ -739,6 +768,156 @@ export default function LeadershipContentPage() {
                 >
                   <Save size={18} />
                   <span>{saving ? "Saving..." : "Save Chairperson"}</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* 6. Executive Management */}
+          <section
+            id="executives"
+            className="bg-white rounded-3xl shadow-sm border border-gray-200 overflow-hidden transition-all hover:shadow-md"
+          >
+            <div className="border-b border-gray-100 bg-gray-50/50 px-8 py-5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-teal-100 flex items-center justify-center text-teal-600 font-normal text-lg">
+                  6
+                </div>
+                <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                  <Award className="text-teal-500" size={22} />
+                  Executive Management
+                </h2>
+              </div>
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+                Leadership
+              </span>
+            </div>
+
+            <div className="p-8 space-y-8">
+              <CardManager
+                cards={executives}
+                onChange={setExecutives}
+                cardTemplate={{
+                  id: Date.now(),
+                  name: "",
+                  title: "",
+                  image: "",
+                }}
+                title="Executives"
+                folder="leadership"
+              />
+              <div className="pt-6 border-t border-gray-100 flex justify-end">
+                <button
+                  onClick={() =>
+                    saveSection("Executive Management", {
+                      executives,
+                    })
+                  }
+                  disabled={saving}
+                  className="flex items-center gap-2 px-10 py-4 bg-gray-900 hover:bg-black text-white rounded-2xl font-normal transition-all shadow-xl shadow-gray-900/10 active:scale-95 disabled:opacity-50"
+                >
+                  <Save size={18} />
+                  <span>{saving ? "Saving..." : "Save Executives"}</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* 7. Departmental Leadership */}
+          <section
+            id="departmental"
+            className="bg-white rounded-3xl shadow-sm border border-gray-200 overflow-hidden transition-all hover:shadow-md"
+          >
+            <div className="border-b border-gray-100 bg-gray-50/50 px-8 py-5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center text-indigo-600 font-normal text-lg">
+                  7
+                </div>
+                <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                  <Users className="text-indigo-500" size={22} />
+                  Departmental Leadership
+                </h2>
+              </div>
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+                Leadership
+              </span>
+            </div>
+
+            <div className="p-8 space-y-8">
+              <CardManager
+                cards={departmental}
+                onChange={setDepartmental}
+                cardTemplate={{
+                  id: Date.now(),
+                  name: "",
+                  title: "",
+                  image: "",
+                }}
+                title="Departmental Leaders"
+                folder="leadership"
+              />
+              <div className="pt-6 border-t border-gray-100 flex justify-end">
+                <button
+                  onClick={() =>
+                    saveSection("Departmental Leadership", {
+                      departmental,
+                    })
+                  }
+                  disabled={saving}
+                  className="flex items-center gap-2 px-10 py-4 bg-gray-900 hover:bg-black text-white rounded-2xl font-normal transition-all shadow-xl shadow-gray-900/10 active:scale-95 disabled:opacity-50"
+                >
+                  <Save size={18} />
+                  <span>{saving ? "Saving..." : "Save Departmental"}</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* 8. Vice Presidents */}
+          <section
+            id="vps"
+            className="bg-white rounded-3xl shadow-sm border border-gray-200 overflow-hidden transition-all hover:shadow-md"
+          >
+            <div className="border-b border-gray-100 bg-gray-50/50 px-8 py-5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-fuchsia-100 flex items-center justify-center text-fuchsia-600 font-normal text-lg">
+                  8
+                </div>
+                <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                  <Globe className="text-fuchsia-500" size={22} />
+                  Vice Presidents
+                </h2>
+              </div>
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+                Leadership
+              </span>
+            </div>
+
+            <div className="p-8 space-y-8">
+              <CardManager
+                cards={vps}
+                onChange={setVps}
+                cardTemplate={{
+                  id: Date.now(),
+                  name: "",
+                  title: "",
+                  image: "",
+                }}
+                title="Vice Presidents"
+                folder="leadership"
+              />
+              <div className="pt-6 border-t border-gray-100 flex justify-end">
+                <button
+                  onClick={() =>
+                    saveSection("Vice Presidents", {
+                      vps,
+                    })
+                  }
+                  disabled={saving}
+                  className="flex items-center gap-2 px-10 py-4 bg-gray-900 hover:bg-black text-white rounded-2xl font-normal transition-all shadow-xl shadow-gray-900/10 active:scale-95 disabled:opacity-50"
+                >
+                  <Save size={18} />
+                  <span>{saving ? "Saving..." : "Save VPs"}</span>
                 </button>
               </div>
             </div>

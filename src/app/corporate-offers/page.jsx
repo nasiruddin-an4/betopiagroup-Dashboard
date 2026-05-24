@@ -382,7 +382,8 @@ export default function CorporateOffersPage() {
 
             {/* Category Form Modal */}
             {showCategoryForm && (
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4 overflow-y-auto">
+                <div className="bg-white rounded-2xl max-w-2xl w-full p-6 space-y-6 shadow-xl my-8">
                 <div className="flex items-center justify-between mb-5">
                   <h3 className="text-lg font-bold text-gray-900">
                     {editingCategory ? "Edit Category" : "New Category"}
@@ -455,6 +456,7 @@ export default function CorporateOffersPage() {
                     </button>
                   </div>
                 </div>
+              </div>
               </div>
             )}
 
@@ -583,270 +585,246 @@ export default function CorporateOffersPage() {
 
             {/* Offer Form Modal */}
             {showOfferForm && (
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <div className="flex items-center justify-between mb-5">
-                  <h3 className="text-lg font-bold text-gray-900">
-                    {editingOffer ? "Edit Offer" : "New Offer"}
-                  </h3>
-                  <button
-                    onClick={resetOfferForm}
-                    className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg cursor-pointer"
-                  >
-                    <X size={20} />
-                  </button>
-                </div>
-                <div className="space-y-4">
-                  <div className="space-y-4">
-                    <div>
-                      <label className={labelClass}>Title *</label>
-                      <input
-                        type="text"
-                        value={offerForm.title}
-                        onChange={(e) =>
-                          setOfferForm({ ...offerForm, title: e.target.value })
-                        }
-                        placeholder="e.g. Foodpanda"
-                        className={inputClass}
-                      />
-                    </div>
-                    <div>
-                      <label className={labelClass}>Partner</label>
-                      <input
-                        type="text"
-                        value={offerForm.partner}
-                        onChange={(e) =>
-                          setOfferForm({
-                            ...offerForm,
-                            partner: e.target.value,
-                          })
-                        }
-                        placeholder="e.g. Foodpanda"
-                        className={inputClass}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className={labelClass}>Description</label>
-                    <textarea
-                      value={offerForm.description}
-                      onChange={(e) =>
-                        setOfferForm({
-                          ...offerForm,
-                          description: e.target.value,
-                        })
-                      }
-                      rows={3}
-                      placeholder="Describe the offer..."
-                      className={`${inputClass} resize-none`}
-                    />
-                  </div>
-
-                  <div className="space-y-4">
-                    <div>
-                      <label className={labelClass}>
-                        <span className="flex items-center gap-1.5">
-                          <Tag size={13} className="text-gray-400" />
-                          Category
-                        </span>
-                      </label>
-                      <select
-                        value={offerForm.category}
-                        onChange={(e) =>
-                          setOfferForm({
-                            ...offerForm,
-                            category: e.target.value,
-                          })
-                        }
-                        className={`${inputClass} cursor-pointer`}
-                      >
-                        <option value="">Select category</option>
-                        {categories.map((cat) => (
-                          <option key={cat._id} value={cat.name}>
-                            {cat.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label className={labelClass}>
-                        <span className="flex items-center gap-1.5">
-                          <MapPin size={13} className="text-gray-400" />
-                          Location
-                        </span>
-                      </label>
-                      <input
-                        type="text"
-                        value={offerForm.location}
-                        onChange={(e) =>
-                          setOfferForm({
-                            ...offerForm,
-                            location: e.target.value,
-                          })
-                        }
-                        placeholder="e.g. Bangladesh"
-                        className={inputClass}
-                      />
-                    </div>
-                    <div>
-                      <label className={labelClass}>
-                        <span className="flex items-center gap-1.5">
-                          <Users size={13} className="text-gray-400" />
-                          Applicability
-                        </span>
-                      </label>
-                      <input
-                        type="text"
-                        value={offerForm.applicability}
-                        onChange={(e) =>
-                          setOfferForm({
-                            ...offerForm,
-                            applicability: e.target.value,
-                          })
-                        }
-                        placeholder="e.g. Betopian Employees"
-                        className={inputClass}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div>
-                      <label className={labelClass}>
-                        <span className="flex items-center gap-1.5">
-                          <Globe size={13} className="text-gray-400" />
-                          Website
-                        </span>
-                      </label>
-                      <input
-                        type="text"
-                        value={offerForm.website}
-                        onChange={(e) =>
-                          setOfferForm({
-                            ...offerForm,
-                            website: e.target.value,
-                          })
-                        }
-                        placeholder="https://..."
-                        className={inputClass}
-                      />
-                    </div>
-                    <div>
-                      <label className={labelClass}>
-                        <span className="flex items-center gap-1.5">
-                          <Phone size={13} className="text-gray-400" />
-                          Hotline
-                        </span>
-                      </label>
-                      <input
-                        type="text"
-                        value={offerForm.hotline}
-                        onChange={(e) =>
-                          setOfferForm({
-                            ...offerForm,
-                            hotline: e.target.value,
-                          })
-                        }
-                        placeholder="+880 ..."
-                        className={inputClass}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <FileUpload
-                      label="Offer Image"
-                      value={offerForm.image}
-                      onChange={(url) =>
-                        setOfferForm({ ...offerForm, image: url })
-                      }
-                      folder="offers/images"
-                      type="image"
-                    />
-                  </div>
-                  <div>
-                    <FileUpload
-                      label="Offer Logo"
-                      value={offerForm.logo}
-                      onChange={(url) =>
-                        setOfferForm({ ...offerForm, logo: url })
-                      }
-                      folder="offers/logos"
-                      type="image"
-                    />
-                  </div>
-
-                  {/* Terms & Conditions */}
-                  <div>
-                    <label className={labelClass}>
-                      <span className="flex items-center gap-1.5">
-                        <FileText size={13} className="text-gray-400" />
-                        Offer Benefits
-                      </span>
-                    </label>
-                    {offerForm.tnc.map((term, i) => (
-                      <div key={i} className="flex gap-2 mb-2">
-                        <input
-                          type="text"
-                          value={term}
-                          onChange={(e) => {
-                            const updated = [...offerForm.tnc];
-                            updated[i] = e.target.value;
-                            setOfferForm({ ...offerForm, tnc: updated });
-                          }}
-                          placeholder={`Term ${i + 1}`}
-                          className={inputClass}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const updated = offerForm.tnc.filter(
-                              (_, idx) => idx !== i,
-                            );
-                            setOfferForm({
-                              ...offerForm,
-                              tnc: updated.length === 0 ? [""] : updated,
-                            });
-                          }}
-                          className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer shrink-0"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
-                    ))}
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4">
+                <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+                  {/* Header */}
+                  <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-white shrink-0">
+                    <h3 className="text-xl font-bold text-gray-900">
+                      {editingOffer ? "Edit Offer" : "New Offer"}
+                    </h3>
                     <button
-                      type="button"
-                      onClick={() =>
-                        setOfferForm({
-                          ...offerForm,
-                          tnc: [...offerForm.tnc, ""],
-                        })
-                      }
-                      className="text-sm text-[#f79549] hover:text-orange-600 font-medium cursor-pointer flex items-center gap-1"
+                      onClick={resetOfferForm}
+                      className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
                     >
-                      <Plus size={14} />
-                      Add Term
+                      <X size={20} />
                     </button>
                   </div>
 
-                  <div className="flex gap-3 pt-2">
+                  {/* Body */}
+                  <div className="p-6 overflow-y-auto flex-1 bg-gray-50/30 custom-scrollbar">
+                    <div className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <label className={labelClass}>Title *</label>
+                          <input
+                            type="text"
+                            value={offerForm.title}
+                            onChange={(e) =>
+                              setOfferForm({ ...offerForm, title: e.target.value })
+                            }
+                            placeholder="e.g. Foodpanda"
+                            className={inputClass}
+                          />
+                        </div>
+                        <div>
+                          <label className={labelClass}>Partner</label>
+                          <input
+                            type="text"
+                            value={offerForm.partner}
+                            onChange={(e) =>
+                              setOfferForm({ ...offerForm, partner: e.target.value })
+                            }
+                            placeholder="e.g. Foodpanda"
+                            className={inputClass}
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className={labelClass}>Description</label>
+                        <textarea
+                          value={offerForm.description}
+                          onChange={(e) =>
+                            setOfferForm({ ...offerForm, description: e.target.value })
+                          }
+                          rows={3}
+                          placeholder="Describe the offer..."
+                          className={`${inputClass} resize-none`}
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                          <label className={labelClass}>
+                            <span className="flex items-center gap-1.5">
+                              <Tag size={13} className="text-gray-400" />
+                              Category
+                            </span>
+                          </label>
+                          <select
+                            value={offerForm.category}
+                            onChange={(e) =>
+                              setOfferForm({ ...offerForm, category: e.target.value })
+                            }
+                            className={`${inputClass} cursor-pointer`}
+                          >
+                            <option value="">Select category</option>
+                            {categories.map((cat) => (
+                              <option key={cat._id} value={cat.name}>
+                                {cat.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div>
+                          <label className={labelClass}>
+                            <span className="flex items-center gap-1.5">
+                              <MapPin size={13} className="text-gray-400" />
+                              Location
+                            </span>
+                          </label>
+                          <input
+                            type="text"
+                            value={offerForm.location}
+                            onChange={(e) =>
+                              setOfferForm({ ...offerForm, location: e.target.value })
+                            }
+                            placeholder="e.g. Bangladesh"
+                            className={inputClass}
+                          />
+                        </div>
+                        <div>
+                          <label className={labelClass}>
+                            <span className="flex items-center gap-1.5">
+                              <Users size={13} className="text-gray-400" />
+                              Applicability
+                            </span>
+                          </label>
+                          <input
+                            type="text"
+                            value={offerForm.applicability}
+                            onChange={(e) =>
+                              setOfferForm({ ...offerForm, applicability: e.target.value })
+                            }
+                            placeholder="e.g. Betopian Employees"
+                            className={inputClass}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <label className={labelClass}>
+                            <span className="flex items-center gap-1.5">
+                              <Globe size={13} className="text-gray-400" />
+                              Website
+                            </span>
+                          </label>
+                          <input
+                            type="text"
+                            value={offerForm.website}
+                            onChange={(e) =>
+                              setOfferForm({ ...offerForm, website: e.target.value })
+                            }
+                            placeholder="https://..."
+                            className={inputClass}
+                          />
+                        </div>
+                        <div>
+                          <label className={labelClass}>
+                            <span className="flex items-center gap-1.5">
+                              <Phone size={13} className="text-gray-400" />
+                              Hotline
+                            </span>
+                          </label>
+                          <input
+                            type="text"
+                            value={offerForm.hotline}
+                            onChange={(e) =>
+                              setOfferForm({ ...offerForm, hotline: e.target.value })
+                            }
+                            placeholder="+880 ..."
+                            className={inputClass}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <FileUpload
+                            label="Offer Image"
+                            value={offerForm.image}
+                            onChange={(url) => setOfferForm({ ...offerForm, image: url })}
+                            folder="offers/images"
+                            type="image"
+                          />
+                        </div>
+                        <div>
+                          <FileUpload
+                            label="Offer Logo"
+                            value={offerForm.logo}
+                            onChange={(url) => setOfferForm({ ...offerForm, logo: url })}
+                            folder="offers/logos"
+                            type="image"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                        <label className="block text-sm font-bold text-gray-900 mb-4">
+                          <span className="flex items-center gap-2">
+                            <FileText size={16} className="text-[#f79549]" />
+                            Offer Benefits / T&C
+                          </span>
+                        </label>
+                        <div className="space-y-3">
+                          {offerForm.tnc.map((term, i) => (
+                            <div key={i} className="flex gap-2 items-start">
+                              <span className="mt-3 w-1.5 h-1.5 rounded-full bg-[#f79549] shrink-0" />
+                              <input
+                                type="text"
+                                value={term}
+                                onChange={(e) => {
+                                  const updated = [...offerForm.tnc];
+                                  updated[i] = e.target.value;
+                                  setOfferForm({ ...offerForm, tnc: updated });
+                                }}
+                                placeholder={`Benefit or Term ${i + 1}`}
+                                className={inputClass}
+                              />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const updated = offerForm.tnc.filter((_, idx) => idx !== i);
+                                  setOfferForm({
+                                    ...offerForm,
+                                    tnc: updated.length === 0 ? [""] : updated,
+                                  });
+                                }}
+                                className="mt-1 p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer shrink-0"
+                              >
+                                <Trash2 size={18} />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setOfferForm({ ...offerForm, tnc: [...offerForm.tnc, ""] })}
+                          className="mt-4 text-sm text-[#f79549] hover:text-orange-600 font-semibold cursor-pointer flex items-center gap-1.5"
+                        >
+                          <Plus size={16} />
+                          Add another benefit
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Footer */}
+                  <div className="flex items-center justify-end gap-3 p-5 border-t border-gray-100 bg-white shrink-0">
+                    <button
+                      onClick={resetOfferForm}
+                      className="px-6 py-2.5 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-xl transition-colors cursor-pointer text-sm font-medium"
+                    >
+                      Cancel
+                    </button>
                     <button
                       onClick={saveOffer}
                       disabled={offerSaving}
-                      className="flex items-center gap-2 px-5 py-2.5 bg-[#f79549] hover:bg-orange-600 text-white rounded-lg transition-colors disabled:opacity-50 shadow-sm cursor-pointer text-sm font-medium"
+                      className="flex items-center gap-2 px-8 py-2.5 bg-[#f79549] hover:bg-orange-600 text-white rounded-xl transition-all shadow-md shadow-orange-500/20 disabled:opacity-50 cursor-pointer text-sm font-medium"
                     >
-                      <Save size={16} />
-                      {offerSaving
-                        ? "Saving..."
-                        : editingOffer
-                          ? "Update Offer"
-                          : "Create Offer"}
-                    </button>
-                    <button
-                      onClick={resetOfferForm}
-                      className="px-5 py-2.5 border border-gray-200 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer text-sm"
-                    >
-                      Cancel
+                      <Save size={18} />
+                      {offerSaving ? "Saving..." : editingOffer ? "Update Offer" : "Create Offer"}
                     </button>
                   </div>
                 </div>
