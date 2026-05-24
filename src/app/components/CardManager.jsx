@@ -159,112 +159,112 @@ export default function CardManager({
             key={card.id || index}
             className="bg-gray-50 border border-gray-200 rounded-xl p-4 shadow-sm"
           >
-              <div className="flex items-start gap-4">
-                <div className="flex flex-col gap-2">
-                  <button
-                    onClick={() => handleMove(index, -1)}
-                    disabled={index === 0}
-                    className="text-gray-400 hover:text-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                  >
-                    <GripVertical size={20} />
-                  </button>
-                  <button
-                    onClick={() => handleMove(index, 1)}
-                    disabled={index === cards.length - 1}
-                    className="text-gray-400 hover:text-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                  >
-                    <GripVertical size={20} className="rotate-180" />
-                  </button>
-                </div>
-                <div className="flex flex-1 min-w-0 gap-5 items-center pl-2">
-                  {/* Primary Media Thumbnail */}
-                  {(() => {
-                    const mediaKeys = Object.keys(card).filter(k => 
-                      k.toLowerCase().includes("image") || 
-                      k.toLowerCase().includes("icon") || 
-                      k.toLowerCase().includes("logo") || 
+            <div className="flex items-start gap-4">
+              <div className="flex flex-col gap-2">
+                <button
+                  onClick={() => handleMove(index, -1)}
+                  disabled={index === 0}
+                  className="text-gray-400 hover:text-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                >
+                  <GripVertical size={20} />
+                </button>
+                <button
+                  onClick={() => handleMove(index, 1)}
+                  disabled={index === cards.length - 1}
+                  className="text-gray-400 hover:text-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                >
+                  <GripVertical size={20} className="rotate-180" />
+                </button>
+              </div>
+              <div className="flex flex-1 min-w-0 gap-5 items-center pl-2">
+                {/* Primary Media Thumbnail */}
+                {(() => {
+                  const mediaKeys = Object.keys(card).filter(k =>
+                    k.toLowerCase().includes("image") ||
+                    k.toLowerCase().includes("icon") ||
+                    k.toLowerCase().includes("logo") ||
+                    k.toLowerCase().includes("video")
+                  );
+                  const primaryMediaKey = mediaKeys.find(k => card[k]) || mediaKeys[0];
+                  if (!primaryMediaKey) return null;
+
+                  const mediaVal = card[primaryMediaKey];
+                  const isVid = primaryMediaKey.toLowerCase().includes("video");
+
+                  return (
+                    <div className="flex-shrink-0 w-20 h-20 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
+                      {mediaVal ? (
+                        isVid ? (
+                          <span className="text-xs text-blue-600 font-medium px-2 text-center">Video</span>
+                        ) : (
+                          <img src={mediaVal} alt="Thumbnail" className="w-full h-full object-contain p-2" />
+                        )
+                      ) : (
+                        <span className="text-xs text-gray-400 text-center px-2">No Image</span>
+                      )}
+                    </div>
+                  );
+                })()}
+
+                {/* Text Details */}
+                <div className="flex-1 min-w-0 space-y-1.5 text-sm">
+                  {Object.entries(card).map(([key, value]) => {
+                    if (key === "id") return null;
+
+                    const mediaKeys = Object.keys(card).filter(k =>
+                      k.toLowerCase().includes("image") ||
+                      k.toLowerCase().includes("icon") ||
+                      k.toLowerCase().includes("logo") ||
                       k.toLowerCase().includes("video")
                     );
                     const primaryMediaKey = mediaKeys.find(k => card[k]) || mediaKeys[0];
-                    if (!primaryMediaKey) return null;
-                    
-                    const mediaVal = card[primaryMediaKey];
-                    const isVid = primaryMediaKey.toLowerCase().includes("video");
-                    
+
+                    // Skip the primary media key since it's shown as the thumbnail
+                    if (key === primaryMediaKey) return null;
+
+                    const isMediaField =
+                      key.toLowerCase().includes("image") ||
+                      key.toLowerCase().includes("icon") ||
+                      key.toLowerCase().includes("logo") ||
+                      key.toLowerCase().includes("video");
+
                     return (
-                      <div className="flex-shrink-0 w-20 h-20 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
-                        {mediaVal ? (
-                          isVid ? (
-                            <span className="text-xs text-blue-600 font-medium px-2 text-center">Video</span>
-                          ) : (
-                            <img src={mediaVal} alt="Thumbnail" className="w-full h-full object-contain p-2" />
-                          )
+                      <div key={key} className="truncate">
+                        <span className="text-gray-500 font-medium">{key}: </span>
+                        {isMediaField ? (
+                          <span className="text-blue-600 text-xs italic">{value ? "Media attached" : "None"}</span>
                         ) : (
-                          <span className="text-xs text-gray-400 text-center px-2">No Image</span>
+                          <span className="text-gray-900 font-normal">{value || <span className="text-gray-300 italic">Empty</span>}</span>
                         )}
                       </div>
                     );
-                  })()}
-
-                  {/* Text Details */}
-                  <div className="flex-1 min-w-0 space-y-1.5 text-sm">
-                    {Object.entries(card).map(([key, value]) => {
-                      if (key === "id") return null;
-                      
-                      const mediaKeys = Object.keys(card).filter(k => 
-                        k.toLowerCase().includes("image") || 
-                        k.toLowerCase().includes("icon") || 
-                        k.toLowerCase().includes("logo") || 
-                        k.toLowerCase().includes("video")
-                      );
-                      const primaryMediaKey = mediaKeys.find(k => card[k]) || mediaKeys[0];
-                      
-                      // Skip the primary media key since it's shown as the thumbnail
-                      if (key === primaryMediaKey) return null;
-
-                      const isMediaField =
-                        key.toLowerCase().includes("image") ||
-                        key.toLowerCase().includes("icon") ||
-                        key.toLowerCase().includes("logo") ||
-                        key.toLowerCase().includes("video");
-
-                      return (
-                        <div key={key} className="truncate">
-                          <span className="text-gray-500 font-medium">{key}: </span>
-                          {isMediaField ? (
-                            <span className="text-blue-600 text-xs italic">{value ? "Media attached" : "None"}</span>
-                          ) : (
-                            <span className="text-gray-900 font-normal">{value || <span className="text-gray-300 italic">Empty</span>}</span>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleEdit(index)}
-                    className="p-2 text-blue-500 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors"
-                    title="Edit"
-                  >
-                    <Edit2 size={18} />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(index)}
-                    className="p-2 text-red-500 hover:bg-red-50 hover:text-red-700 rounded-lg transition-colors"
-                    title="Delete"
-                  >
-                    <Trash2 size={18} />
-                  </button>
+                  })}
                 </div>
               </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleEdit(index)}
+                  className="p-2 text-blue-500 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors"
+                  title="Edit"
+                >
+                  <Edit2 size={18} />
+                </button>
+                <button
+                  onClick={() => handleDelete(index)}
+                  className="p-2 text-red-500 hover:bg-red-50 hover:text-red-700 rounded-lg transition-colors"
+                  title="Delete"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            </div>
           </div>
         ))}
       </div>
 
       {cards.length === 0 && editingIndex === null && (
         <div className="text-center py-12 text-gray-500 bg-gray-50 border border-gray-200 border-dashed rounded-lg shadow-sm">
-          <p>No cards yet. Click "Add Card" to create one.</p>
+          <p>No cards yet. Click "Add Card" to create one</p>
         </div>
       )}
 
@@ -272,7 +272,7 @@ export default function CardManager({
       {editingIndex !== null && editingCard && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4">
           <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
-            
+
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-white shrink-0">
               <h3 className="text-xl font-bold text-gray-900">
