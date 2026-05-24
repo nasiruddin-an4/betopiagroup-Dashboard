@@ -108,20 +108,9 @@ export default function LeadershipContentPage() {
     setChairBio("Sabina Akter represents the new era of leadership...");
     setChairImage("/chairman.webp");
     setChairLink("https://sabinaakter.com/");
-    setExecutives([
-      { id: 1, name: "Md. Nasir", title: "Chief Operating Officer (COO)", image: "/C_suite/nasir-COO.png" },
-      { id: 2, name: "Abdullah Al Alamin", title: "Chief Marketing Officer (CMO)", image: "/C_suite/abdullah-CMO.png" }
-    ]);
-    setDepartmental([
-      { id: 1, name: "Md. Saiful Islam", title: "Director, Finance", image: "/C_suite/saiful-Director FA.png" },
-      { id: 2, name: "Md. Rezaul Karim", title: "Head of Administration & Legal Affairs", image: "/C_suite/reja-Head-Admin.png" },
-      { id: 3, name: "Md. Sajedul Islam", title: "Head of Human Resources", image: "/C_suite/sajedul-HR Head.png" }
-    ]);
-    setVps([
-      { id: 1, name: "Md. Abdul Motin", title: "Vice President, Operation", image: "/C_suite/Md.-Abdul-Motin,-VICE-PRESIDENT.png" },
-      { id: 2, name: "Md. Amirul Haque", title: "Vice President, Sales", image: "/C_suite/Md.-Amirul-Haque,-VICE-PRESIDENT-SALES.png" },
-      { id: 3, name: "Md. Shamim Miah", title: "Vice President, Business Development", image: "/C_suite/Md.-Shamim-Miah,-VICE-PRESIDENT-BUSINESS-DEVELOPMENT.png" }
-    ]);
+    setExecutives([]);
+    setDepartmental([]);
+    setVps([]);
   };
 
   const updatePillar = (index, field, value) => {
